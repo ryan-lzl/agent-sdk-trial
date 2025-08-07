@@ -14,5 +14,16 @@ pip install "openai-agents[litellm]" litellm python-dotenv boto3
 ## Run
 
 ```bash
+# 1. confirm local AWS profile setting
+aws sso login --profile agency_admin-654654286512-ap
+export AWS_PROFILE=agency_admin-654654286512-ap
+aws sts get-caller-identity --profile agency_admin-654654286512-ap --region ap-southeast-1
+
+# 2. Trun Off Cloudware WARP
+
+# 3. get the model list
+python model_list.py
+
+# 4. Run the agent
 python run_agent.py
 ```
