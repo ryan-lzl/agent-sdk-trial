@@ -50,15 +50,15 @@ else:
 print("\n" + "="*50 + "\n")
 
 # --- Method 2: Using the OpenAI Client Library (for comparison) ---
-print("--- Calling models using the `openai` client library ---")
+# print("--- Calling models using the `openai` client library ---")
 
-if not all([proxy_url, api_key, model_sonnet]):
-    print("Error: Missing one or more environment variables for OpenAI client.")
-else:
-    client = openai.OpenAI(api_key=api_key, base_url=proxy_url)
-    try:
-        model_list = client.models.list()
-        models_dict = [model.dict() for model in model_list.data]
-        print(json.dumps(models_dict, indent=2))
-    except Exception as e:
-        print(f"An error occurred while fetching models: {e}")
+# if not all([proxy_url, api_key, model_sonnet]):
+#     print("Error: Missing one or more environment variables for OpenAI client.")
+# else:
+#     client = openai.OpenAI(api_key=api_key, base_url=proxy_url)
+#     try:
+#         model_list = client.models.list()
+#         models_dict = [model.dict() for model in model_list.data]
+#         print(json.dumps(models_dict, indent=2))
+#     except Exception as e:
+#         print(f"An error occurred while fetching models: {e}")

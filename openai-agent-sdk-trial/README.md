@@ -1,18 +1,17 @@
-# OpenAI Agent SDK Trial
+# Google ASK Trial
 
 A minimal setup to run an agent using the OpenAI Agent SDK.
 
 ## Setup
 
 ```bash
-cd ~/agent-sdk-trial/openai-agent-sdk-trial
-conda create --name openai-agents-env python=3.11
+cd ~/agent-sdk-trial/google-adk-trial
+conda create --name adk-agents-env python=3.11
 conda activate openai-agents-env
 pip install "openai-agents[litellm]" litellm python-dotenv boto3
 ```
 
 ## Run
-
 ```bash
 # 1. confirm local AWS profile setting
 aws sso login --profile agency_admin-654654286512-ap
@@ -27,3 +26,21 @@ python model_list.py
 # 4. Run the agent
 python run_agent.py
 ```
+
+## Switch model
+```bash
+# Use Gemini 2.5 Pro
+export OPENAI_AGENT_SDK_ACTIVE_MODEL=GEMINI_25_PRO
+python run_agent.py
+
+
+# Use GPT-5 Chat (Azure)
+export OPENAI_AGENT_SDK_ACTIVE_MODEL=GPT5_CHAT
+python run_agent.py
+
+
+# SONNET (Anthropic)
+export OPENAI_AGENT_SDK_ACTIVE_MODEL=SONNET
+python run_agent.py
+```
+
