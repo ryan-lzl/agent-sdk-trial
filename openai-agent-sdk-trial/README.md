@@ -27,6 +27,9 @@ python model_list.py
 python run_agent.py
 ```
 
+![alt text](image.png)
+![alt text](image-1.png)
+
 ## Switch model
 ```bash
 # Use Gemini 2.5 Pro
@@ -43,4 +46,6 @@ python run_agent.py
 export OPENAI_AGENT_SDK_ACTIVE_MODEL=SONNET
 python run_agent.py
 ```
+
+
 

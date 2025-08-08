@@ -26,3 +26,5 @@ aws sts get-caller-identity --profile agency_admin-654654286512-ap --region ap-s
 # 3. Run the agent
 adk run my_agent.gemini_agent
 ```
+
+![alt text](image.png)
