@@ -41,6 +41,9 @@ python run_agent.py
 export OPENAI_AGENT_SDK_ACTIVE_MODEL=GPT5_CHAT
 python run_agent.py
 
+# Use GPT$O-MINI
+export OPENAI_AGENT_SDK_ACTIVE_MODEL=GPT4O_MINI
+python run_agent.py
 
 # SONNET (Anthropic)
 export OPENAI_AGENT_SDK_ACTIVE_MODEL=SONNET

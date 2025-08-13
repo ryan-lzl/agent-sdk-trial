@@ -16,15 +16,21 @@ pip install -U "litellm[proxy]>=1.72"
 ## Run
 
 ```bash
-# 1. confirm local AWS profile setting
-aws sso login --profile agency_admin-654654286512-ap
-export AWS_PROFILE=agency_admin-654654286512-ap
-aws sts get-caller-identity --profile agency_admin-654654286512-ap --region ap-southeast-1
+# 1. Trun Off Cloudware WARP
 
-# 2. Trun Off Cloudware WARP
-
-# 3. Run the agent
+# 2. Run the agent
+cd ~/agent-sdk-trial/
 adk run my_agent.gemini_agent
 ```
 
+## CHT-5
 ![alt text](image.png)
+
+## SONNET
+![alt text](image-1.png)
+
+## GEMINI
+![alt text](image-2.png)
+
+## GPT4O-MINI
+![alt text](image-3.png)
