@@ -1,4 +1,4 @@
-# Google ASK Trial
+# OpenAI Agent SDK Trial
 
 A minimal setup to run an agent using the OpenAI Agent SDK.
 
