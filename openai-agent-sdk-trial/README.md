@@ -5,7 +5,7 @@ A minimal setup to run an agent using the OpenAI Agent SDK.
 ## Setup
 
 ```bash
-cd ~/agent-sdk-trial/google-adk-trial
+cd ~/agent-sdk-trial/openai-agent-sdk-trial
 conda create --name adk-agents-env python=3.11
 conda activate openai-agents-env
 pip install "openai-agents[litellm]" litellm python-dotenv boto3

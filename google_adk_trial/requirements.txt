@@ -1,0 +1,15 @@
+# Core ADK CLI & runtime
+google-adk>=1.9.0
+
+# Env loader
+python-dotenv>=1.0.1
+
+# LiteLLM CLIENT ONLY (do not install the proxy extra here)
+litellm>=1.75.5
+
+# Your Web Fetch & Summarize tool deps
+requests>=2.32.0
+beautifulsoup4>=4.12.3
+
+# Optional if you add AWS tools later
+boto3>=1.28.0

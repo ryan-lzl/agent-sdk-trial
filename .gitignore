@@ -1,9 +1,9 @@
 # ── Environment ────────────────────────────────
-.env          # exactly ".env"
-*.env         # anyfile.env
+.env
+*.env
 
 # ── Editor/IDE ─────────────────────────────────
-.vscode/      # VS Code workspace settings
+.vscode/
 
 # ── Python ─────────────────────────────────────
 __pycache__/

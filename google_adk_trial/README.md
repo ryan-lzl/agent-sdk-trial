@@ -1,16 +1,15 @@
-# OpenAI Agent SDK Trial
+# Google ADK Trial (LiteLLM + Web Fetch Tool)
+Minimal agent wired to a LiteLLM proxy with a Web Fetch & Summarize tool. Includes a wrapper that hides ADK’s noisy `UserWarning` lines.
 
-A minimal setup to run an agent using the OpenAI Agent SDK.
-
-## Setup
+## Fresh Setup
 
 ```bash
-cd ~/agent-sdk-trial/openai-agent-sdk-trial
-conda create --name google-adk-trial python=3.12 -y
+cd ~/agent-sdk-trial/google_adk_trial
+conda create -n google-adk-trial python=3.12 -y
 conda activate google-adk-trial
-pip install google-adk python-dotenv boto3
-pip install -U "litellm>=1.72.1"
-pip install -U "litellm[proxy]>=1.72"
+
+# Install dependencies
+python -m pip install -U -r requirements.txt
 ```
 
 ## Run
@@ -19,18 +18,18 @@ pip install -U "litellm[proxy]>=1.72"
 # 1. Trun Off Cloudware WARP
 
 # 2. Run the agent
-cd ~/agent-sdk-trial/
-adk run my_agent.gemini_agent
+cd ~/agent-sdk-trial/google_adk_trial
+python run_adk.py
 ```
 
 ## CHT-5
-![alt text](image.png)
+![alt text](image-4.png)
 
 ## SONNET
-![alt text](image-1.png)
+![alt text](image-5.png)
 
 ## GEMINI
-![alt text](image-2.png)
+![alt text](image-6.png)
 
 ## GPT4O-MINI
-![alt text](image-3.png)
+![alt text](image-7.png)

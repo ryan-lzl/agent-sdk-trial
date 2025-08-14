@@ -1,0 +1,10 @@
+# Strands SDK + LiteLLM provider + example tools
+strands-agents[litellm]>=1.0.0
+strands-agents-tools>=0.2.0
+
+# Load your .env file
+python-dotenv>=1.0.1
+
+# for Web Fetch & Summarize
+requests>=2.32.0
+beautifulsoup4>=4.12.3
