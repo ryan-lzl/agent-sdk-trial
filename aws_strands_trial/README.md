@@ -24,7 +24,7 @@ pip install -r requirements.txt
 python agent.py
 ```
 
-## CHT-5
+## GPT-5
 ![alt text](image-4.png)
 
 ## claude-3-5-sonnet
