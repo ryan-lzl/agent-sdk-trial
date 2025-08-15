@@ -1,16 +1,30 @@
-# Use TestPyPI for the Microsoft 365 Agents SDK, but allow dependencies from PyPI
+# Use TestPyPI first (Agents SDK publishes here), with PyPI as a fallback
 --index-url https://test.pypi.org/simple/
 --extra-index-url https://pypi.org/simple
 
-# Microsoft 365 Agents SDK (Python)
-microsoft-agents-core
-microsoft-agents-authorization
-microsoft-agents-connector
+# --- Microsoft 365 Agents SDK (Python) ---
+# Core protocol models & primitives used across the SDK
+microsoft-agents-activity
+
+# Builder layer (Agent, TurnContext, adapters, OAuth flow, state helpers)
 microsoft-agents-builder
-microsoft-agents-authentication-msal
+
+# **Base Storage namespace** (MemoryStorage, StoreItem) required by Builder/state
+microsoft-agents-storage
+
+# Hosting
+microsoft-agents-hosting-core
 microsoft-agents-hosting-aiohttp
 
-# Runtime deps
+# Auth bits (used by some hosting flows)
+microsoft-agents-authorization
+microsoft-agents-authentication-msal
+
+# Optional storage providers you may want later (safe to keep, no harm if unused)
+microsoft-agents-storage-blob
+microsoft-agents-storage-cosmos
+
+# --- Runtime deps you already had ---
 pydantic>=2.11.0
 openai>=1.40.0
 python-dotenv>=1.0.0

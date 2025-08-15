@@ -34,16 +34,34 @@ python repl.py
 
 ```
 
+
 ## GPT-5
+### Option A
+![alt text](image-5.png)
+
+### Option B
 ![alt text](image.png)
 
 
 ## claude-3-5-sonnet
+### Option A
+![alt text](image-6.png)
+
+### Option B
 ![alt text](image-1.png)
 
 
 ## gemini-2.5-pro
+### Option A
+![alt text](image-7.png)
+
+### Option B
 ![alt text](image-2.png)
 
 ## GPT4O-MINI
+
+### Option A
+![alt text](image-4.png)
+
+### Option B
 ![alt text](image-3.png)
