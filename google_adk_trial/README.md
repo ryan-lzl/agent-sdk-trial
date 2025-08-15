@@ -22,7 +22,7 @@ cd ~/agent-sdk-trial/google_adk_trial
 python run_adk.py
 ```
 
-## CHT-5
+## GPT-5
 ![alt text](image-4.png)
 
 ## SONNET
