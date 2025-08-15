@@ -20,7 +20,7 @@ pip install langgraph langchain-litellm python-dotenv langchain requests beautif
 python main.py
 ```
 
-## CHT-5
+## gpt-5
 ![alt text](image-5.png)
 
 ## claude-3-5-sonnet
