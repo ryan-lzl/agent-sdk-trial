@@ -19,18 +19,23 @@ References: Microsoft docs (overview & get started).
 cd ~/agent-sdk-trial/ms_365_agent_trial
 conda create -n ms365_agent_env python=3.11 -y
 conda activate ms365_agent_env
+python -m pip install -U pip setuptools wheel
 pip install -r requirements.txt
 
 ```
 
 ## 2. Run
 ```bash
-python run_agent.py
+# Option A: Web host (Agents SDK) for Playground testing
+python app.py
+
+# Option B: Local REPL
+python repl.py
 
 ```
 
 ## GPT-5
-![alt text](image-2.png)
+![alt text](image.png)
 
 
 ## claude-3-5-sonnet
@@ -38,7 +43,7 @@ python run_agent.py
 
 
 ## gemini-2.5-pro
-![alt text](image-3.png)
+![alt text](image-2.png)
 
 ## GPT4O-MINI
-![alt text](image-4.png)
+![alt text](image-3.png)

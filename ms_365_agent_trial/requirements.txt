@@ -1,4 +1,19 @@
+# Use TestPyPI for the Microsoft 365 Agents SDK, but allow dependencies from PyPI
+--index-url https://test.pypi.org/simple/
+--extra-index-url https://pypi.org/simple
+
+# Microsoft 365 Agents SDK (Python)
+microsoft-agents-core
+microsoft-agents-authorization
+microsoft-agents-connector
+microsoft-agents-builder
+microsoft-agents-authentication-msal
+microsoft-agents-hosting-aiohttp
+
+# Runtime deps
+pydantic>=2.11.0
+openai>=1.40.0
 python-dotenv>=1.0.0
-openai>=1.37.0
 requests>=2.31.0
 beautifulsoup4>=4.12.3
+aiohttp>=3.9.0
