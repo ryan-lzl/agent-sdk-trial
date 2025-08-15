@@ -8,7 +8,7 @@ A minimal setup to run an agent using the LangChain/LanggRaph with LiteLLM.
 cd ~/agent-sdk-trial/langgraph_agent_trial
 conda create -n langgraph_env python=3.10 -y
 conda activate langgraph_env
-pip install langgraph langchain-litellm python-dotenv langchain
+pip install langgraph langchain-litellm python-dotenv langchain requests beautifulsoup4
 ```
 
 ## Run
@@ -21,13 +21,13 @@ python main.py
 ```
 
 ## CHT-5
-![alt text](image.png)
+![alt text](image-5.png)
 
 ## claude-3-5-sonnet
-![alt text](image-1.png)
+![alt text](image-6.png)
 
 ## gemini-2.5-pro
-![alt text](image-2.png)
+![alt text](image-7.png)
 
 ## gpt-4o-mini
-![alt text](image-3.png)
+![alt text](image-4.png)

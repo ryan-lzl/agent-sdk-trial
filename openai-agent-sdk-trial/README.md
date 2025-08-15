@@ -8,27 +8,19 @@ A minimal setup to run an agent using the OpenAI Agent SDK.
 cd ~/agent-sdk-trial/openai-agent-sdk-trial
 conda create --name adk-agents-env python=3.11
 conda activate openai-agents-env
-pip install "openai-agents[litellm]" litellm python-dotenv boto3
+pip install "openai-agents[litellm]" litellm python-dotenv boto3 requests beautifulsoup4
 ```
 
 ## Run
 ```bash
-# 1. confirm local AWS profile setting
-aws sso login --profile agency_admin-654654286512-ap
-export AWS_PROFILE=agency_admin-654654286512-ap
-aws sts get-caller-identity --profile agency_admin-654654286512-ap --region ap-southeast-1
+# 1. Trun Off Cloudware WARP
 
-# 2. Trun Off Cloudware WARP
-
-# 3. get the model list
+# 2. get the model list
 python model_list.py
 
-# 4. Run the agent
+# 3. Run the agent
 python run_agent.py
 ```
-
-![alt text](image.png)
-![alt text](image-1.png)
 
 ## Switch model
 ```bash
@@ -41,7 +33,7 @@ python run_agent.py
 export OPENAI_AGENT_SDK_ACTIVE_MODEL=GPT5_CHAT
 python run_agent.py
 
-# Use GPT$O-MINI
+# Use GPT4O-MINI
 export OPENAI_AGENT_SDK_ACTIVE_MODEL=GPT4O_MINI
 python run_agent.py
 
@@ -50,5 +42,15 @@ export OPENAI_AGENT_SDK_ACTIVE_MODEL=SONNET
 python run_agent.py
 ```
 
+## GPT-5 (Azure)
+![alt text](image-2.png)
 
+## SONNET (Anthropic)
+![alt text](image-3.png)
+
+## Gemini 2.5 Pro
+![alt text](image-4.png)
+
+## GPT4O-MINI
+![alt text](image-5.png)
 
