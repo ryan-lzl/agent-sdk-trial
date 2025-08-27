@@ -3,6 +3,7 @@ import os
 import json
 import uuid
 import traceback
+import re
 from typing import List, Dict, Any
 
 from dotenv import load_dotenv
@@ -10,7 +11,14 @@ from aiohttp import web
 
 from microsoft.agents.core.models.activity import Activity
 
-from core.lite_llm_model import chat
+# Import ACTIVE_MODEL if available (from your toggle-enabled client);
+# fall back gracefully if not exported.
+try:
+    from core.lite_llm_model import chat, ACTIVE_MODEL  # type: ignore
+except Exception:  # pragma: no cover
+    from core.lite_llm_model import chat  # type: ignore
+    ACTIVE_MODEL = os.getenv("LITELLM_MODEL_ID") or os.getenv("OPENAI_MODEL_ID") or "unknown"
+
 from tools.fetch_and_summarize import TOOL_SPEC, run as run_fetch
 
 load_dotenv()
@@ -24,6 +32,30 @@ TOOLS: List[Dict[str, Any]] = [TOOL_SPEC]
 
 # ---- enforce a healthy first fetch so models don't ask for a second round
 FETCH_MIN_CHARS = int(os.getenv("FETCH_MIN_CHARS", "8000"))  # can override in .env
+
+# --- Models known (or conservatively assumed) to NOT support OpenAI-style function calling
+# Add/adjust as needed for your environment.
+NO_TOOL_MODELS = {
+    "openai.gpt-oss-120b-1:0",
+    "openai.gpt-oss-20b-1:0",
+    "DeepSeek-R1",
+    "us.deepseek.r1-v1:0",
+    "us.meta.llama4-maverick-17b-instruct-v1:0",
+    "us.meta.llama4-scout-17b-instruct-v1:0",
+}
+
+# Simple heuristic: treat ids containing these tokens as non-tool-capable too
+_NO_TOOL_SUBSTRINGS = ("gpt-oss", "r1", "llama4-maverick", "llama4-scout")
+
+def _tools_supported(model_id: str) -> bool:
+    mid = (model_id or "").strip()
+    if mid in NO_TOOL_MODELS:
+        return False
+    lower = mid.lower()
+    return not any(tok in lower for tok in _NO_TOOL_SUBSTRINGS)
+
+# --- URL detector (for auto local fetch when tools aren't supported)
+URL_RE = re.compile(r'https?://\S+')
 
 # --- Simple in-memory sessions for multi-turn ---
 SESSIONS: Dict[str, List[Dict[str, Any]]] = {}  # sid -> list[{"role": ..., "content": ...}]
@@ -123,8 +155,41 @@ async def handle_engine_turn_streaming(resp: web.StreamResponse, messages: List[
     If tool_calls exist -> execute them ONCE, emit tool events.
     Then do a single streaming call for the answer.
     """
-    # Probe for tools once
-    probe = chat(messages, tools=TOOLS, tool_choice="auto", stream=False)
+    # Decide tool capability for the active model, and whether we need to locally fetch a URL.
+    user_text = messages[-1]["content"]
+    needs_fetch = URL_RE.search(user_text) is not None
+    supports_tools = _tools_supported(ACTIVE_MODEL)
+
+    # If tools aren't supported but a URL is present, fetch locally and inject the text.
+    tool_choice = "auto" if supports_tools else "none"
+    if needs_fetch and not supports_tools:
+        url = URL_RE.search(user_text).group(0)
+        # Emit tool events to keep UI consistent
+        await resp.write(_sse_event("tool", {
+            "phase": "start",
+            "name": "fetch_and_summarize",
+            "args": {"url": url, "max_chars": max(FETCH_MIN_CHARS, 10_000)}
+        }))
+        fetched = run_fetch(url=url, timeout_sec=12, max_chars=max(FETCH_MIN_CHARS, 10_000))
+        await resp.write(_sse_event("tool", {
+            "phase": "end",
+            "name": "fetch_and_summarize",
+            "chars": len(fetched),
+            "preview": (fetched[:200] + ("…" if len(fetched) > 200 else ""))
+        }))
+        messages.append({
+            "role": "user",
+            "content": f"Here is the page text from {url}:\n\n{fetched}\n\nPlease provide 3 concise key points."
+        })
+        tool_choice = "none"  # final LLM call should not include tool params
+
+    # Probe for tools once (only if we intend to use tools)
+    probe = chat(
+        messages,
+        tools=(TOOLS if tool_choice != "none" else None),
+        tool_choice=tool_choice,
+        stream=False
+    )
     msg = probe.choices[0].message
 
     if getattr(msg, "tool_calls", None):
@@ -158,7 +223,12 @@ async def handle_engine_turn_streaming(resp: web.StreamResponse, messages: List[
                 }))
 
     # Final streaming answer (single call)
-    stream = chat(messages, tools=TOOLS, tool_choice="auto", stream=True)
+    stream = chat(
+        messages,
+        tools=(TOOLS if tool_choice != "none" else None),
+        tool_choice=tool_choice,
+        stream=True
+    )
     final_text_parts: List[str] = []
     for chunk in stream:
         delta = getattr(chunk.choices[0].delta, "content", None)
@@ -364,11 +434,26 @@ resetBtn.onclick = async () => {{
                 return web.json_response({"error": "activity missing 'text'"}, status=400)
 
             messages = _build_messages(sid, text)
-            probe = chat(messages, tools=TOOLS, tool_choice="auto", stream=False)
+
+            # Apply the same tool-capability logic for non-streaming path
+            needs_fetch = URL_RE.search(text) is not None
+            supports_tools = _tools_supported(ACTIVE_MODEL)
+            tool_choice = "auto" if supports_tools else "none"
+
+            if needs_fetch and not supports_tools:
+                url = URL_RE.search(text).group(0)
+                fetched = run_fetch(url=url, timeout_sec=12, max_chars=max(FETCH_MIN_CHARS, 10_000))
+                messages.append({
+                    "role": "user",
+                    "content": f"Here is the page text from {url}:\n\n{fetched}\n\nPlease provide 3 concise key points."
+                })
+                tool_choice = "none"
+
+            probe = chat(messages, tools=(TOOLS if tool_choice != "none" else None), tool_choice=tool_choice, stream=False)
             msg = probe.choices[0].message
             if getattr(msg, "tool_calls", None):
                 messages.extend(_tool_call_messages(msg))
-                final = chat(messages, tools=TOOLS, tool_choice="auto", stream=False)
+                final = chat(messages, tools=(TOOLS if tool_choice != "none" else None), tool_choice=tool_choice, stream=False)
                 reply = final.choices[0].message.content or ""
             else:
                 reply = msg.content or ""

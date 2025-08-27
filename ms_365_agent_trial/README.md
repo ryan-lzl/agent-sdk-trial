@@ -35,7 +35,7 @@ python repl.py
 ```
 
 
-## GPT-5
+## GPT-5 (Azure)
 ### Option A
 ![alt text](image-5.png)
 
@@ -43,7 +43,7 @@ python repl.py
 ![alt text](image.png)
 
 
-## claude-3-5-sonnet
+## claude-3-5-sonnet (Bedrock)
 ### Option A
 ![alt text](image-6.png)
 
@@ -51,17 +51,47 @@ python repl.py
 ![alt text](image-1.png)
 
 
-## gemini-2.5-pro
+## gemini-2.5-pro (Vertex)
 ### Option A
 ![alt text](image-7.png)
 
 ### Option B
 ![alt text](image-2.png)
 
-## GPT4O-MINI
+## GPT4O-MINI (Azure)
 
 ### Option A
 ![alt text](image-4.png)
 
 ### Option B
 ![alt text](image-3.png)
+
+
+## DeepSeek-R1 (Azure)
+### Option A
+![alt text](<Screenshot 2025-08-27 113501.png>)
+![alt text](<Screenshot 2025-08-27 113630.png>)
+
+## gpt-oss-120b-1:0 (Bedrock)
+### Option A
+![alt text](<Screenshot 2025-08-27 114217.png>)
+
+## LLAMA3.3 (bedrock)
+![alt text](<Screenshot 2025-08-27 114817.png>)
+
+## 3. How to know where the model is hosted?
+```bash
+LITELLM_PROXY_API_KEY=sk--123
+LITELLM_PROXY_URL=https://litellm-stg.aip.gov.sg
+URL="${LITELLM_PROXY_URL%/}"
+
+curl -sS -H "Authorization: Bearer $LITELLM_PROXY_API_KEY" \
+  "$URL/model/info" \
+| jq -r '(.data // .)[]
+         | select(.model_name=="anthropic.claude-3-5-sonnet-20240620-v1:0")
+         | {model_name, backend: .litellm_params.model, region: .litellm_params.aws_region_name}'
+
+
+```
+
+![alt text](<Screenshot 2025-08-27 114305.png>)
